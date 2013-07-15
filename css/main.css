@@ -726,5 +726,11 @@ ul.yiiPager a:visited
     text-shadow:#CCC 0.1em 0.1em 0.1em;
 }
 
-
+.image_post {
+    width: 300px;
+    height: 300px;
+    padding: 5px;
+    margin: 5px;
+    border: solid #555;
+}
 

@@ -46,8 +46,6 @@
                     echo ' | ';
                     echo CHtml::link('About', array('/site/page', 'view' => 'about'));
                     echo ' | ';
-                    echo CHtml::link('Contact', array('/site/contact'));
-                    echo ' | ';
                     if (Yii::app()->user->isGuest) {
                         echo CHtml::link(Yii::app()->getModule('user')->t("Login"), Yii::app()->getModule('user')->loginUrl);
                         echo ' | ';
@@ -71,10 +69,31 @@
                 $this->widget('ext.mbmenu.MbMenu', array(
                     'items' => array(
                         array(
-                            'label' => 'Blog',
+                            'label' => 'News',
                             'url' => array('/blog/post'),
-                            'visible' => !Yii::app()->user->isGuest,
+                            'visible' => Yii::app()->user->checkAccess(Rights::module()->authenticatedName),
                             'itemOptions' => array('class' => 'first'),
+                        ),
+                        array(
+                            'label' => 'Media',
+                            'visible' => Yii::app()->user->checkAccess(Rights::module()->authenticatedName),
+                            'items' => array(
+                                array(
+                                    'label' => 'Picture',
+                                    'url' => array('/media/picture'),
+                                    'visible' => Yii::app()->user->checkAccess(Rights::module()->authenticatedName)
+                                ),
+                                array(
+                                    'label' => 'Video',
+                                    'url' => array('/media/video'),
+                                    'visible' => Yii::app()->user->checkAccess(Rights::module()->authenticatedName)
+                                ),
+                                array(
+                                    'label' => 'Category',
+                                    'url' => array('/media/category'),
+                                    'visible' => Yii::app()->user->checkAccess(Rights::module()->authenticatedName)
+                                ),
+                            ),
                         ),
                         array(
                             'label' => 'Admin',

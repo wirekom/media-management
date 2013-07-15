@@ -66,10 +66,10 @@ class User extends CActiveRecord {
     public function relations() {
         $relations = Yii::app()->getModule('user')->relations;
         return CMap::mergeArray($relations, array(
-                    'dinas' => array(self::HAS_ONE, 'Dinas', 'user_id'),
-                    'pejabat' => array(self::HAS_ONE, 'Pejabat', 'user_id'),
-                    'wajibPajak' => array(self::HAS_ONE, 'WajibPajak', 'user_id'),
-                ));
+                    'pictures' => array(self::HAS_MANY, 'Picture', 'author_id'),
+                    'posts' => array(self::HAS_MANY, 'Post', 'author_id'),
+                    'videos' => array(self::HAS_MANY, 'Video', 'author_id'),
+        ));
     }
 
     /**
@@ -117,7 +117,7 @@ class User extends CActiveRecord {
         return CMap::mergeArray(Yii::app()->getModule('user')->defaultScope, array(
                     'alias' => 'user',
                     'select' => 'user.id, user.username, user.email, user.lastvisit, user.superuser, user.status, user.created, user.updated',
-                ));
+        ));
     }
 
     public static function itemAlias($type, $code = NULL) {
@@ -160,11 +160,11 @@ class User extends CActiveRecord {
         $criteria->compare('updated', $this->updated, true);
 
         return new CActiveDataProvider(get_class($this), array(
-                    'criteria' => $criteria,
-                    'pagination' => array(
-                        'pageSize' => Yii::app()->getModule('user')->user_page_size,
-                    ),
-                ));
+            'criteria' => $criteria,
+            'pagination' => array(
+                'pageSize' => Yii::app()->getModule('user')->user_page_size,
+            ),
+        ));
     }
 
     public function getCreatetime() {
