@@ -10,6 +10,7 @@
     $form = $this->beginWidget('CActiveForm', array(
         'id' => 'registrasi-form',
         'enableAjaxValidation' => false,
+        'htmlOptions' => array('enctype' => 'multipart/form-data'),
     ));
     ?>
 
@@ -73,13 +74,13 @@
 
     <div class="row">
         <?php echo $form->labelEx($model, 'photo_graph'); ?>
-        <?php echo $form->textField($model, 'photo_graph', array('size' => 60, 'maxlength' => 255)); ?>
+        <?php echo $form->fileField($model, 'photo_graph', array('size' => 60, 'maxlength' => 255)); ?>
         <?php echo $form->error($model, 'photo_graph'); ?>
     </div>
 
     <div class="row">
         <?php echo $form->labelEx($model, 'letter_of_assignment'); ?>
-        <?php echo $form->textField($model, 'letter_of_assignment', array('size' => 60, 'maxlength' => 255)); ?>
+        <?php echo $form->fileField($model, 'letter_of_assignment', array('size' => 60, 'maxlength' => 255)); ?>
         <?php echo $form->error($model, 'letter_of_assignment'); ?>
     </div>
 

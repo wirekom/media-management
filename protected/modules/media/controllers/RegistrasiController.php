@@ -88,9 +88,18 @@ class RegistrasiController extends Controller {
         $model = new Registrasi;
 
         // Uncomment the following line if AJAX validation is needed
-        // $this->performAjaxValidation($model);
+        $this->performAjaxValidation($model);
 
         if (isset($_POST['Registrasi'])) {
+            $iphoto_graph = CUploadedFile::getInstance($model, 'photo_graph');
+            $iletter_of_assignment = CUploadedFile::getInstance($model, 'letter_of_assignment');
+            if ($iphoto_graph !== null && $iletter_of_assignment !== null ) {
+                $model->photo_graph = time() . '_' . $iphoto_graph->getName() . '.' . $iphoto_graph->getExtensionName();
+                $model->letter_of_assignment = time() . '_' . $iletter_of_assignment->getName() . '.' . $iletter_of_assignment->getExtensionName();
+                $dir = Yii::getPathOfAlias('webroot') . Yii::app()->params['uploads'];
+                $iphoto_graph->saveAs($dir . $model->photo_graph);
+                $iletter_of_assignment->saveAs($dir . $model->letter_of_assignment);
+            }
             $model->attributes = $_POST['Registrasi'];
             if ($model->save())
                 $this->redirect(array('view', 'id' => $model->id));

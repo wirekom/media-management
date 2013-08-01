@@ -45,9 +45,12 @@ class Registrasi extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('first_name, last_name, passport_num, job_title, media_name, company_address, company_desc, email_address, mobile_num, photo_graph, letter_of_assignment', 'required'),
+            array('first_name, last_name, passport_num, job_title, media_name, company_address, company_desc, email_address, mobile_num', 'required'),
             array('first_name, last_name, passport_num, job_title, media_name, email_address, mobile_num, photo_graph, letter_of_assignment', 'length', 'max' => 255),
             array('verifyCode', 'captcha'),
+            array('letter_of_assignment', 'file', 'types' => 'pdf', 'allowEmpty' => true),
+            array('photo_graph', 'file', 'types' => 'jpg, png, jpeg', 'allowEmpty' => true),
+            array('photo_graph, letter_of_assignment', 'required', 'on' => 'insert'),
             array('email_address', 'email'), // model rules
             array('is_passport_valid', 'compare', 'compareValue' => 1, 'message' => 'Please ensure that your passport valid for at least 6 months prior to the date of entry into Indonesia and must have at least 2 blank page in the book.'),
             // The following rule is used by search().
