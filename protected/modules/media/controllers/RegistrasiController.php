@@ -16,7 +16,11 @@ class RegistrasiController extends Controller {
             'rights',
         );
     }
-    
+
+    public function allowedActions() {
+        return 'index, create, view, update, update, delete, captcha, exportXls';
+    }
+
     /**
      * Declares class-based actions.
      */
@@ -27,6 +31,43 @@ class RegistrasiController extends Controller {
                 'backColor' => 0xFFFFFF,
             ),
         );
+    }
+
+    public function actionExportXls() {
+        spl_autoload_unregister(array('YiiBase', 'autoload'));
+        Yii::import('application.vendors.PHPExcel.PHPExcel', true);
+        spl_autoload_register(array('YiiBase', 'autoload'));
+        $objPHPExcel = new PHPExcel();
+        $objPHPExcel->getProperties()->setCreator("Widodo Pangestu")
+                ->setLastModifiedBy("Widodo Pangestu")
+                ->setTitle("PDF Test Document")
+                ->setSubject("PDF Test Document")
+                ->setDescription("Test document for PDF, generated using PHP classes.")
+                ->setKeywords("pdf php")
+                ->setCategory("Test result file");
+
+        $reader = Registrasi::model()->findAll();
+        $no = '1';
+        foreach ($reader as $row) {
+            $char = 'A';
+            foreach ($row as $key => $value) {
+                $objPHPExcel->setActiveSheetIndex(0)->getCell("$char$no")->setValue($value);
+                $objPHPExcel->setActiveSheetIndex(0)->getStyle("$char$no")->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+                $char++;
+            }
+            $no++;
+        }
+
+        $objPHPExcel->getActiveSheet()->setTitle('Report App');
+        $objPHPExcel->setActiveSheetIndex(0);
+
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename="report_app.xls"');
+        header('Cache-Control: max-age=0');
+
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+        $objWriter->save('php://output');
+        exit;
     }
 
     /**

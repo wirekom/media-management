@@ -94,6 +94,12 @@
             <br/><?php echo "Letters are not case-sensitive."; ?></p>
     </div>
 
+    <div class="row">
+        <?php echo $form->checkBox($model, 'is_passport_valid'); ?>
+        <?php echo $form->labelEx($model, 'is_passport_valid'); ?>
+        <?php echo $form->error($model, 'is_passport_valid'); ?>
+    </div>
+
     <div class="row buttons">
         <?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
     </div>
